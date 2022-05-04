@@ -58,6 +58,8 @@
   <ItemGroup>
     <Compile Include="Assets\NodeCreator.cs" />
     <Compile Include="Assets\NodeCreationEditor.cs" />
+    <Compile Include="Assets\SurfacePointGenerator.cs" />
+    <Compile Include="Assets\SurfacePointGeneratorEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
