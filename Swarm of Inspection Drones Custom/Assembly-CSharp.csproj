@@ -57,9 +57,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\NodeCreator.cs" />
-    <Compile Include="Assets\NodeCreationEditor.cs" />
     <Compile Include="Assets\SurfacePointGenerator.cs" />
     <Compile Include="Assets\SurfacePointGeneratorEditor.cs" />
+    <Compile Include="Assets\NodeCreationEditor.cs" />
+    <Compile Include="Assets\InspectionCoordinator.cs" />
+    <Compile Include="Assets\InspectionDrone.cs" />
+    <Compile Include="Assets\SurfacePoint.cs" />
+    <Compile Include="Assets\InspectionPoint.cs" />
+    <Compile Include="Assets\HoverController.cs" />
+    <Compile Include="Assets\PID.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

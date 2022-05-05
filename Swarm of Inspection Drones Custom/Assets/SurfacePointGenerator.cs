@@ -5,186 +5,188 @@ using UnityEngine;
 
 
 
-public class SurfacePointGenerator : MonoBehaviour
-{/*
-    public class LineBetweenPoints
-    {
-        public Vector3 point1;
-        public Vector3 point2;
-        public Vector3 direction;
+public class SurfacePointGenerator : MonoBehaviour   
+{
+    public bool drawSurfacePoints = false;
+    /*
+   public class LineBetweenPoints
+   {
+       public Vector3 point1;
+       public Vector3 point2;
+       public Vector3 direction;
 
-        public LineBetweenPoints(Vector3 from, Vector3 to)
-        {
-            point1 = from;
-            point2 = to;
-            direction = to - from;
-        }
-    }
+       public LineBetweenPoints(Vector3 from, Vector3 to)
+       {
+           point1 = from;
+           point2 = to;
+           direction = to - from;
+       }
+   }
 
 
-    [SerializeField] float GridWidth;
-    [SerializeField] float GridHeight;
-    [SerializeField] float GridLength;
-    [SerializeField] float PointDistance;
+   [SerializeField] float GridWidth;
+   [SerializeField] float GridHeight;
+   [SerializeField] float GridLength;
+   [SerializeField] float PointDistance;
 
-    public GameObject inspectionCube;
+   public GameObject inspectionCube;
 
-    private bool SameSide(Vector3 p1, Vector3 p2, Vector3 a, Vector3 b) //https://blackpawn.com/texts/pointinpoly/
-    {
-        Vector3 cp1 = Vector3.Cross(b - a, p1 - a);
-        Vector3 cp2 = Vector3.Cross(b - a, p2 - a);
-        if (Vector3.Dot(cp1, cp2) >= 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+   private bool SameSide(Vector3 p1, Vector3 p2, Vector3 a, Vector3 b) //https://blackpawn.com/texts/pointinpoly/
+   {
+       Vector3 cp1 = Vector3.Cross(b - a, p1 - a);
+       Vector3 cp2 = Vector3.Cross(b - a, p2 - a);
+       if (Vector3.Dot(cp1, cp2) >= 0)
+       {
+           return true;
+       }
+       else
+       {
+           return false;
+       }
+   }
 
-    private bool PointInTriangle(Vector3 p, Vector3 a, Vector3 b, Vector3 c)
-    {
-        if (SameSide(p, a, b, c) && SameSide(p, b, a, c) && SameSide(p, c, a, b))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+   private bool PointInTriangle(Vector3 p, Vector3 a, Vector3 b, Vector3 c)
+   {
+       if (SameSide(p, a, b, c) && SameSide(p, b, a, c) && SameSide(p, c, a, b))
+       {
+           return true;
+       }
+       else
+       {
+           return false;
+       }
+   }
 
-    //https://stackoverflow.com/questions/48705719/generate-x-amount-of-points-between-two-points
-    void linearInterp(Vector3 from, Vector3 to, Vector3[] result, int chunkAmount)
-    {
-        //divider must be between 0 and 1
-        float divider = 1f / chunkAmount;
-        float linear = 0f;
+   //https://stackoverflow.com/questions/48705719/generate-x-amount-of-points-between-two-points
+   void linearInterp(Vector3 from, Vector3 to, Vector3[] result, int chunkAmount)
+   {
+       //divider must be between 0 and 1
+       float divider = 1f / chunkAmount;
+       float linear = 0f;
 
-        if (chunkAmount == 0)
-        {
-            Debug.LogError("chunkAmount Distance must be > 0 instead of " + chunkAmount);
-            return;
-        }
+       if (chunkAmount == 0)
+       {
+           Debug.LogError("chunkAmount Distance must be > 0 instead of " + chunkAmount);
+           return;
+       }
 
-        if (chunkAmount == 1)
-        {
-            result[0] = Vector3.Lerp(from, to, 0.5f); //Return half/middle point
-            return;
-        }
+       if (chunkAmount == 1)
+       {
+           result[0] = Vector3.Lerp(from, to, 0.5f); //Return half/middle point
+           return;
+       }
 
-        for (int i = 0; i < chunkAmount; i++)
-        {
-            if (i == 0)
-            {
-                linear = divider / 2;
-            }
-            else
-            {
-                linear += divider; //Add the divider to it to get the next distance
-            }
-            // Debug.Log("Loop " + i + ", is " + linear);
-            result[i] = Vector3.Lerp(from, to, linear);
-        }
-    }
+       for (int i = 0; i < chunkAmount; i++)
+       {
+           if (i == 0)
+           {
+               linear = divider / 2;
+           }
+           else
+           {
+               linear += divider; //Add the divider to it to get the next distance
+           }
+           // Debug.Log("Loop " + i + ", is " + linear);
+           result[i] = Vector3.Lerp(from, to, linear);
+       }
+   }
 
-    private float getRelevantScale(Vector3 direction)
-    {
-        Vector3 relevantScale = Vector3.Scale(new Vector3(Mathf.Abs(direction.x), Mathf.Abs(direction.y), Mathf.Abs(direction.z)), transform.localScale);
-        if (relevantScale.x != 0f)
-        {
-            return relevantScale.x;
-        }
-        if (relevantScale.y != 0f)
-        {
-            return relevantScale.y;
-        }
-        if (relevantScale.z != 0f)
-        {
-            return relevantScale.z;
-        }
-        return 0f;
-    }
+   private float getRelevantScale(Vector3 direction)
+   {
+       Vector3 relevantScale = Vector3.Scale(new Vector3(Mathf.Abs(direction.x), Mathf.Abs(direction.y), Mathf.Abs(direction.z)), transform.localScale);
+       if (relevantScale.x != 0f)
+       {
+           return relevantScale.x;
+       }
+       if (relevantScale.y != 0f)
+       {
+           return relevantScale.y;
+       }
+       if (relevantScale.z != 0f)
+       {
+           return relevantScale.z;
+       }
+       return 0f;
+   }
 
-    
 
-    public void InspectCube()
-    {
-        Mesh mesh = inspectionCube.GetComponent<MeshFilter>().mesh;
-        Vector3[] vertices = mesh.vertices;
-        Vector3[] normals = mesh.normals;
-        int[] indices = mesh.triangles;
-        int triangleCount = indices.Length / 3;
 
-        //https://answers.unity.com/questions/725081/finding-the-vertices-that-make-a-face.html
-        for (int i = 0; i < triangleCount; i++)
-        {
-            Vector3 V1 = vertices[indices[i * 3]];
-            Vector3 V2 = vertices[indices[i * 3 + 1]];
-            Vector3 V3 = vertices[indices[i * 3 + 2]];
+   public void InspectCube()
+   {
+       Mesh mesh = inspectionCube.GetComponent<MeshFilter>().mesh;
+       Vector3[] vertices = mesh.vertices;
+       Vector3[] normals = mesh.normals;
+       int[] indices = mesh.triangles;
+       int triangleCount = indices.Length / 3;
 
-            LineBetweenPoints Line1 = new LineBetweenPoints(V1, V2);
-            LineBetweenPoints Line2 = new LineBetweenPoints(V1, V3);
-            LineBetweenPoints Line3 = new LineBetweenPoints(V2, V3);
+       //https://answers.unity.com/questions/725081/finding-the-vertices-that-make-a-face.html
+       for (int i = 0; i < triangleCount; i++)
+       {
+           Vector3 V1 = vertices[indices[i * 3]];
+           Vector3 V2 = vertices[indices[i * 3 + 1]];
+           Vector3 V3 = vertices[indices[i * 3 + 2]];
 
-            LineBetweenPoints aligned1 = null;
-            LineBetweenPoints aligned2 = null;
-            if (Mathf.Abs(Line1.direction.x) == 1 || Mathf.Abs(Line1.direction.y) == 1 || Mathf.Abs(Line1.direction.z) == 1) //check if L1 aligned with axis, others should be 0
-            {
-                if (aligned1 == null)
-                {
-                    aligned1 = Line1;
-                }
-                else
-                {
-                    aligned2 = Line1;
-                }
-            }
-            if (Mathf.Abs(Line2.direction.x) == 1 || Mathf.Abs(Line2.direction.y) == 1 || Mathf.Abs(Line2.direction.z) == 1) //check if L1 aligned with axis, others should be 0
-            {
-                if (aligned1 == null)
-                {
-                    aligned1 = Line2;
-                }
-                else
-                {
-                    aligned2 = Line2;
-                }
-            }
-            if (Mathf.Abs(Line3.direction.x) == 1 || Mathf.Abs(Line3.direction.y) == 1 || Mathf.Abs(Line3.direction.z) == 1) //check if L1 aligned with axis, others should be 0
-            {
-                if (aligned1 == null)
-                {
-                    aligned1 = Line3;
-                }
-                else
-                {
-                    aligned2 = Line3;
-                }
-            }
+           LineBetweenPoints Line1 = new LineBetweenPoints(V1, V2);
+           LineBetweenPoints Line2 = new LineBetweenPoints(V1, V3);
+           LineBetweenPoints Line3 = new LineBetweenPoints(V2, V3);
 
-            float scaleAligned1 = getRelevantScale(aligned1.direction);
-            float scaleAligned2 = getRelevantScale(aligned2.direction);
-            for (var i = 0; i < (int)scaleAligned1; i++)
-            {
-                for (var j = 0; j < (int)scaleAligned2; j++)
-                {
-                    Vector3 point = aligned1.point1 + 
-                }
-            }
-        }
+           LineBetweenPoints aligned1 = null;
+           LineBetweenPoints aligned2 = null;
+           if (Mathf.Abs(Line1.direction.x) == 1 || Mathf.Abs(Line1.direction.y) == 1 || Mathf.Abs(Line1.direction.z) == 1) //check if L1 aligned with axis, others should be 0
+           {
+               if (aligned1 == null)
+               {
+                   aligned1 = Line1;
+               }
+               else
+               {
+                   aligned2 = Line1;
+               }
+           }
+           if (Mathf.Abs(Line2.direction.x) == 1 || Mathf.Abs(Line2.direction.y) == 1 || Mathf.Abs(Line2.direction.z) == 1) //check if L1 aligned with axis, others should be 0
+           {
+               if (aligned1 == null)
+               {
+                   aligned1 = Line2;
+               }
+               else
+               {
+                   aligned2 = Line2;
+               }
+           }
+           if (Mathf.Abs(Line3.direction.x) == 1 || Mathf.Abs(Line3.direction.y) == 1 || Mathf.Abs(Line3.direction.z) == 1) //check if L1 aligned with axis, others should be 0
+           {
+               if (aligned1 == null)
+               {
+                   aligned1 = Line3;
+               }
+               else
+               {
+                   aligned2 = Line3;
+               }
+           }
 
-        for (var i = 0; i < vertices.Length; i++)
-        {
-            Debug.Log(vertices[i]);
-        }
+           float scaleAligned1 = getRelevantScale(aligned1.direction);
+           float scaleAligned2 = getRelevantScale(aligned2.direction);
+           for (var i = 0; i < (int)scaleAligned1; i++)
+           {
+               for (var j = 0; j < (int)scaleAligned2; j++)
+               {
+                   Vector3 point = aligned1.point1 + 
+               }
+           }
+       }
 
-        for (var i = 0; i < normals.Length; i++)
-        {
-            Debug.Log(normals[i]);
-        }
-    }*/
+       for (var i = 0; i < vertices.Length; i++)
+       {
+           Debug.Log(vertices[i]);
+       }
+
+       for (var i = 0; i < normals.Length; i++)
+       {
+           Debug.Log(normals[i]);
+       }
+   }*/
     public List<Vector3> SurfacePoints = new List<Vector3>();
     public List<ProjectionPoint> projectionPoints = new List<ProjectionPoint>();
 
@@ -271,9 +273,12 @@ public class SurfacePointGenerator : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        foreach (Vector3 SurfacePoint in SurfacePoints)
+        if (drawSurfacePoints)
         {
-            Gizmos.DrawSphere(SurfacePoint, 0.1f);
+            foreach (Vector3 SurfacePoint in SurfacePoints)
+            {
+                Gizmos.DrawSphere(SurfacePoint, 0.1f);
+            }
         }
 
         Gizmos.DrawWireCube(transform.position, new Vector3(gridX, gridY, gridZ));
