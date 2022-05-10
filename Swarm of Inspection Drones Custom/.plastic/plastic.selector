@@ -1,0 +1,4 @@
+repository "Swarm of Inspection Drones Simulation@VozzeTheCreator@cloud"
+  path "/"
+    br "/main"
+    co "/main"
