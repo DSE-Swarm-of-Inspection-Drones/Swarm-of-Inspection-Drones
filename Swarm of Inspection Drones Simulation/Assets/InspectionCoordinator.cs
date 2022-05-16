@@ -37,8 +37,7 @@ public class InspectionCoordinator : MonoBehaviour
     float startRealTime;
     float startTime;
 
-    bool inspectionFinished = false;
-    bool inspectoinStarted = false;
+    bool inspectionFinished;
 
     public void StartInspection(int numberOfDrones, float pointDistance, SimulationRun simulationRun)
     {
@@ -58,19 +57,17 @@ public class InspectionCoordinator : MonoBehaviour
         StartInspection();
         startTime = Time.time;
         startRealTime = Time.realtimeSinceStartup;
-
-        inspectoinStarted = true;
     }
 
     private void Update()
     {
-        if (_uninspectedPoints.Count == 0 && inspectoinStarted == true)
+        if (_uninspectedPoints.Count == 0)
         {
             if (!inspectionFinished)
             {
                 Debug.Log("Inspection finished: " + Time.time.ToString());
-                inspectionFinished = true;
                 simulationRun.InspectionFinished(collisionAmount, Time.time - startTime, Time.realtimeSinceStartup - startRealTime);
+                inspectionFinished = true;
             }
         }
     }

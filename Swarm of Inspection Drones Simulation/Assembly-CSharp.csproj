@@ -56,24 +56,23 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\NodeCreator.cs" />
-    <Compile Include="Assets\CameraManager.cs" />
+    <Compile Include="Assets\HoverController.cs" />
+    <Compile Include="Assets\InspectionCoordinator.cs" />
+    <Compile Include="Assets\InspectionPoint.cs" />
+    <Compile Include="Assets\PID.cs" />
     <Compile Include="Assets\InspectionDrone.cs" />
     <Compile Include="Assets\SurfacePointGenerator.cs" />
-    <Compile Include="Assets\TimeController.cs" />
-    <Compile Include="Assets\InspectionCoordinator.cs" />
+    <Compile Include="Assets\NodeCreator.cs" />
+    <Compile Include="Assets\SurfacePoint.cs" />
     <Compile Include="Assets\Don&apos;tDestroyOnLoad\SimulationManager.cs" />
-    <Compile Include="Assets\HoverController.cs" />
-    <Compile Include="Assets\InspectionPoint.cs" />
     <Compile Include="Assets\Menu\Initialiser.cs" />
     <Compile Include="Assets\Don&apos;tDestroyOnLoad\StorageManager.cs" />
-    <Compile Include="Assets\PID.cs" />
-    <Compile Include="Assets\SceneButton.cs" />
-    <Compile Include="Assets\SimulationRun.cs" />
     <Compile Include="Assets\Don&apos;tDestroyOnLoad\SceneManagerWrapper.cs" />
+    <Compile Include="Assets\TimeController.cs" />
+    <Compile Include="Assets\CameraManager.cs" />
     <Compile Include="Assets\Tags.cs" />
-    <Compile Include="Assets\SurfacePoint.cs" />
-    <Compile Include="Assets\SimulationManagerInstantiator.cs" />
+    <Compile Include="Assets\SimulationRun.cs" />
+    <Compile Include="Assets\SceneButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -678,6 +677,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="AstarPathfindingProjectEditor.csproj">
+      <Project>{43EA3263-DE7B-1F57-10F7-61D8EDEC95B6}</Project>
+      <Name>AstarPathfindingProjectEditor</Name>
+    </ProjectReference>
     <ProjectReference Include="AstarPathfindingProject.csproj">
       <Project>{E5EBE0D3-C5F0-59BF-0771-79FBD567D55A}</Project>
       <Name>AstarPathfindingProject</Name>
@@ -685,10 +688,6 @@
     <ProjectReference Include="PackageToolsEditor.csproj">
       <Project>{25EDE69E-BAE3-CF86-099B-901DB88339CE}</Project>
       <Name>PackageToolsEditor</Name>
-    </ProjectReference>
-    <ProjectReference Include="AstarPathfindingProjectEditor.csproj">
-      <Project>{43EA3263-DE7B-1F57-10F7-61D8EDEC95B6}</Project>
-      <Name>AstarPathfindingProjectEditor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

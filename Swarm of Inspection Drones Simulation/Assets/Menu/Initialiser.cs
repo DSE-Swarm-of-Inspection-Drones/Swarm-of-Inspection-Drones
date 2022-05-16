@@ -47,6 +47,21 @@ public class Initialiser : MonoBehaviour
             DontDestroyOnLoad(storageManager);
         }
 
+        //Vraag alle locaties op van de mappen die zouden moeten bestaan
+        storageManagerScript = storageManager.GetComponent<StorageManager>();
+        directoryPaths = storageManagerScript.GetDataPaths();
+
+        //Als deze niet bestaan, creer ze
+        foreach (string directoryPath in directoryPaths)
+        {
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+        }
+
+        Debug.Log(Application.persistentDataPath);
+
         if(Application.isBatchMode)
         {
             LoadBatchSim();

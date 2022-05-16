@@ -14,16 +14,6 @@ public class SceneManagerWrapper : MonoBehaviour
 
     public void LoadLevel(string Level)
     {
-        SceneManager.LoadScene(Level, LoadSceneMode.Single);
+        SceneManager.LoadScene(Level);
     }
-
-    /*public bool LoadLevelBlocking(string level)
-    {
-        SceneManager.LoadScene(level);
-        while (SceneManager.GetActiveScene().name != level)
-        {
-        }
-
-        return true;
-    }*/
 }

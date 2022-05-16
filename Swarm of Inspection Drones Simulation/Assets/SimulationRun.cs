@@ -19,13 +19,13 @@ public class SimulationRun
     public int numberOfDrones = 2;
     public float pointDistance = 1;
 
-    public int runNumber;
-    public SimulationRun(SimulationManager simulationManager, int numberOfDrones, float pointDistance, int runNumber)
+    // Start is called before the first frame update
+
+    public SimulationRun(SimulationManager simulationManager, int numberOfDrones, float pointDistance)
     {
         this.simulationManager = simulationManager;
         this.numberOfDrones = numberOfDrones;
         this.pointDistance = pointDistance;
-        this.runNumber = runNumber;
     }
 
     public void StartSimulation(InspectionCoordinator inspectionCoordinator)

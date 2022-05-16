@@ -15,22 +15,10 @@ public class StorageManager : MonoBehaviour
     List<string> dataPaths = new List<string>();
     public string simulationPath;
 
-    //public string rootPath = "C:\\temp\\Test";
     private void Start()
     {
         //Genereer alle locaties van de bestanden
         dataPaths = GetDataPaths();
-
-        //Als deze niet bestaan, creer ze
-        foreach (string directoryPath in dataPaths)
-        {
-            if (!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
-        }
-
-        Debug.Log(Application.persistentDataPath);
     }
 
     //Genereer alle locaties van de bestanden
@@ -39,7 +27,7 @@ public class StorageManager : MonoBehaviour
     {
         //Application.persistentDataPath is een pad dat eigen is aan het programma en nooit verandert, daarom is het dus handig dit te gebruiken als opslag
         //Onder Application.persistentDataPath wordt een map save gemaakt met twee mappen, accounts en events, de events map krijgt ook nog twee mappen, race en training
-        simulationPath = Path.Combine(Application.persistentDataPath, "SimulationLogs");
+        simulationPath = Application.persistentDataPath + "/SimulationLogs";
         dataPaths.Add(simulationPath);
         return dataPaths;
     }
@@ -131,23 +119,17 @@ public class StorageManager : MonoBehaviour
 
 
     //Sla een training op
-    public void SaveSimulation(string dateTime, int low, int high,
-        int drones, float points, 
-        string simName, 
-        float inspectionTime, float simulatedTime, float numberOfDrones)
+    public void SaveSimulation(string simName, float simulationTime, float simulatedTime, float numberOfDrones)
     {
+        //Creer de datum en tijd in het "MMddyyyy_HHmmss" formaat
+        string dateTime = DateTime.Now.ToString("MMddyyyy_HHmmss");
+
         //Maak een lijst van floats van alle argumenten
         List<float> toSaveFloats = new List<float>();
-        toSaveFloats.Add(inspectionTime); toSaveFloats.Add(simulatedTime); toSaveFloats.Add(numberOfDrones);
+        toSaveFloats.Add(simulationTime); toSaveFloats.Add(simulatedTime); toSaveFloats.Add(numberOfDrones);
 
-        string folderName0 = dateTime + "," + low.ToString() + "," + high.ToString();
-        string folderName1 = drones.ToString(); // + "," + points.ToString();
         //Maak de locatie waar dit bestand zal worden opgeslagen
-        /*if (!Directory.Exists(simulationPath))
-        {
-            Directory.CreateDirectory(simulationPath);
-        }*/
-        string saveLocation = Path.Combine(simulationPath,  "test.txt"); //"/" + folderName0 + "/" + folderName1 + "/" + simName + ".txt";
+        string saveLocation = simulationPath + "/" + simName + "," + dateTime + "," + ".txt";
 
         //Sla het bestand hier op
         SaveAndReplace(saveLocation, toSaveFloats);
